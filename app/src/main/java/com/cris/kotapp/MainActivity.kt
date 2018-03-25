@@ -224,7 +224,6 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         editAge!!.setText("")
     }
     private fun updateDatos(){
-        for(i in 0..count) {
             nombre?.set(pos, name)
             edad?.set(pos, age)
             sexo?.set(pos, gender)
@@ -238,8 +237,6 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
             editName!!.setText("")
             editAge!!.setText("")
             action = "insert"
-            break
-        }
     }
 
 
