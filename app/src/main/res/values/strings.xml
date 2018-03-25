@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">KotlinApp</string>
+    <string name="app_Name">Name</string>
+    <string name="app_Age">Age</string>
+    <string name="app_Button">Ejecutar</string>
+    <string name="app_radioButtonM">Masculino</string>
+    <string name="app_radioButtonF">Femenino</string>
+</resources>
+
