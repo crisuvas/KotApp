@@ -224,18 +224,22 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         editAge!!.setText("")
     }
     private fun updateDatos(){
-        nombre?.set(pos,name)
-        edad?.set(pos,age)
-        sexo?.set(pos,gender)
-        listName = Array(count, {""})
-        for(j in 0..++count){
-            listName?.set(j, nombre?.get(j) as String)
+        for(i in 0..count) {
+            nombre?.set(pos, name)
+            edad?.set(pos, age)
+            sexo?.set(pos, gender)
+            listName = Array(count, { "" })
+            var n = count - 1
+            for (j in 0..n) {
+                listName?.set(j, nombre?.get(j) as String)
+            }
+            val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
+            listV!!.adapter = adapter
+            editName!!.setText("")
+            editAge!!.setText("")
+            action = "insert"
+            break
         }
-        val adapter = ArrayAdapter<String>( this, android.R.layout.simple_list_item_1, listName)
-        listV!!.adapter = adapter
-        editName!!.setText("")
-        editAge!!.setText("")
-        action = "insert"
     }
 
 
