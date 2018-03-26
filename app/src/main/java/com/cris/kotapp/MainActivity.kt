@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -269,9 +270,22 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             vibrator?.vibrate(VibrationEffect.createOneShot(3,10))
+            alertDialog()
         }else{
             vibrator?.vibrate(3)
+            alertDialog()
         }
         return true
+    }
+    private fun alertDialog(){
+        val alert = AlertDialog.Builder(this)
+        alert.setIcon(R.mipmap.ic_tortuga)
+                .setTitle(R.string.app_alertDialog)
+                .setPositiveButton("Eliminar"){dialog, which ->
+                    Toast.makeText(this,"Hola", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Cancelar"){dialog, which ->
+                }
+                .show()
     }
 }
