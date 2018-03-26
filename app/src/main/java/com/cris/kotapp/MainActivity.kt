@@ -1,6 +1,10 @@
 package com.cris.kotapp
+import android.content.Context
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -8,7 +12,8 @@ import android.view.View
 import android.widget.*
 
 
-class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener {
+class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
 
 
     private var editName: EditText? = null
@@ -21,16 +26,17 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     private var radioM: RadioButton? = null
     private var radioF: RadioButton? = null
     private var message = ""
-    internal var listV: ListView? = null
-    internal var nombre: Array<String>? = null
-    internal var edad: Array<String>? = null
-    internal var sexo: Array<String>? = null
+    private var listV: ListView? = null
+    private var nombre: Array<String>? = null
+    private var edad: Array<String>? = null
+    private var sexo: Array<String>? = null
     private var gender = ""
     private var num = 10
     private var count = 1
     private var pos = 0
     private var action = "insert"
     private var listName: Array<String>? = null
+    private var vibrator: Vibrator? = null
 
     //private var age = 0 \\Declare a Integer Type
 
@@ -48,6 +54,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         listV = findViewById(R.id.list)
         /*radioM!!.setOnCheckedChangeListener(this)
         radioF!!.setOnCheckedChangeListener(this)*/
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
         nombre =Array(num, {""})
         edad =Array(num, {""})
         sexo =Array(num, {""})
@@ -59,6 +66,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         editName!!.addTextChangedListener(this)
         editAge!!.addTextChangedListener(this)
         listV!!.onItemClickListener = this
+        listV!!.onItemLongClickListener = this
     }
     override fun onClick(v: View?) {
         when(v!!.id){
@@ -256,5 +264,14 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         }
         pos = position
         action = "update"
+    }
+
+    override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            vibrator?.vibrate(VibrationEffect.createOneShot(3,10))
+        }else{
+            vibrator?.vibrate(3)
+        }
+        return true
     }
 }
