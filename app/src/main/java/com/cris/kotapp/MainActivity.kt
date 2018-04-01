@@ -9,12 +9,12 @@ import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.view.Menu
 import android.view.View
 import android.widget.*
 
 
-class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-
+class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SearchView.OnQueryTextListener {
 
 
     private var editName: EditText? = null
@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     private var action = "insert"
     private var listName: Array<String>? = null
     private var vibrator: Vibrator? = null
+    private var search: SearchView? = null
 
     //private var age = 0 \\Declare a Integer Type
 
@@ -69,6 +70,15 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         listV!!.onItemClickListener = this
         listV!!.onItemLongClickListener = this
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        search = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
+        search!!.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+        search!!.setOnQueryTextListener(this)
+        return true
+    }
+
     override fun onClick(v: View?) {
         when(v!!.id){
             R.id.button_ejecutar ->
@@ -305,4 +315,12 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
             listV!!.adapter = adapter
         }
     }
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return false
+    }
+
 }

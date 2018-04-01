@@ -6,5 +6,6 @@
     <string name="app_radioButtonM">Masculino</string>
     <string name="app_radioButtonF">Femenino</string>
     <string name="app_alertDialog">¿Estás seguro de eliminar el registro?</string>
+    <string name="app_searchView">Buscar</string>
 </resources>
 
