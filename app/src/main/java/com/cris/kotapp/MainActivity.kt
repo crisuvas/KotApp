@@ -270,22 +270,39 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             vibrator?.vibrate(VibrationEffect.createOneShot(3,10))
-            alertDialog()
+            alertDialog(position)
         }else{
             vibrator?.vibrate(3)
-            alertDialog()
+            alertDialog(position)
         }
         return true
     }
-    private fun alertDialog(){
+    private fun alertDialog(i : Int){
         val alert = AlertDialog.Builder(this)
         alert.setIcon(R.mipmap.ic_tortuga)
                 .setTitle(R.string.app_alertDialog)
                 .setPositiveButton("Eliminar"){dialog, which ->
-                    Toast.makeText(this,"Hola", Toast.LENGTH_SHORT).show()
+                    nombre?.set(i, "")
+                    edad?.set(i, "")
+                    sexo?.set(i, "")
+                    mostrar()
                 }
                 .setNegativeButton("Cancelar"){dialog, which ->
                 }
                 .show()
+    }
+    private fun mostrar(){
+        count = 1
+        for(i in 0..num){
+            if(nombre!![i] != ""){
+                val listName = arrayOfNulls<String>(count)
+                for(j in 0..count){
+                    listName[j] = nombre!![i]
+                }
+            }
+            count++
+            val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
+            listV!!.adapter = adapter
+        }
     }
 }
