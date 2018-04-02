@@ -40,22 +40,16 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     private var vibrator: Vibrator? = null
     private var search: SearchView? = null
 
-    //private var age = 0 \\Declare a Integer Type
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         editName = findViewById(R.id.editText_Name)
         editAge = findViewById(R.id.editText_Age)
-        /*textName = findViewById(R.id.textView_Name)
-        textAge = findViewById(R.id.textView_Age)*/
         button = findViewById(R.id.button_ejecutar)
         radioM = findViewById(R.id.radioButton_M)
         radioF = findViewById(R.id.radioButton_F)
         listV = findViewById(R.id.list)
-        /*radioM!!.setOnCheckedChangeListener(this)
-        radioF!!.setOnCheckedChangeListener(this)*/
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
         nombre =Array(num, {""})
         edad =Array(num, {""})
@@ -72,8 +66,8 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
 
     }
 
-    override fun onCreateOptionsMenu(menu : Menu): Boolean {
-       menuInflater.inflate(R.menu.menusearch, menu)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menusearch, menu)
         search = menu.findItem(R.id.app_bar_search).actionView as SearchView
         search!!.setOnQueryTextListener(this)
         return true
@@ -101,18 +95,6 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        /*name = editName?.text.toString()
-        age = editAge?.text.toString()
-        //age = Integer.valueOf(editAge?.text.toString()) \\Converts String to Integer
-
-        PONE O QUITA TEXTO DEL LA PANTALLA QUE LO REPRODUCE
-        if(name != "") textName?.text = name
-        else textName?.text = ""
-        if(age != "") textAge?.text = age
-        else textAge?.text = ""
-
-        //textAge?.text = age.toString() \\Converts number to String
-        //Toast.makeText(this,s.toString(),Toast.LENGTH_SHORT).show() \\Shows the characters*/
 
         name = editName?.text.toString()
         if(name == ""){
@@ -123,16 +105,6 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-       /* when(buttonView!!.id){
-            R.id.radioButton_M ->
-                if(isChecked)
-                Toast.makeText(this, "Ha seleccionado Masculino",Toast.LENGTH_SHORT).show()
-            R.id.radioButton_F ->
-                if(isChecked)
-                Toast.makeText(this, "Ha seleccionado Femenino",Toast.LENGTH_SHORT).show()
-        }*/
-
-
     }
 
     private fun operacion(){
@@ -318,12 +290,12 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
 
     override fun onQueryTextChange(newText: String?): Boolean {
         count = 1
-        if(!newText.equals("", ignoreCase = false)){
-            for(i in 0..num){
+        if(!newText.equals("", ignoreCase = true)){
+            for(i in 0 until num){
                 if(nombre!![i] != null){
                     if(nombre!![i].startsWith(newText.toString())){
                         val listName = arrayOfNulls<String>(count)
-                        for(j in 0..count){
+                        for(j in 0 until count){
                             listName[j] = nombre!![i]
                         }
                         count++
@@ -334,10 +306,10 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
             }
         }else{
             count=1
-            for(i in 0..num){
+            for(i in 0 until num){
                 if(nombre!![i] != null){
                     val listName = arrayOfNulls<String>(count)
-                    for(j in 0..count){
+                    for(j in 0 until count){
                         listName[j] = nombre!![j]
                     }
                     count++
@@ -346,10 +318,10 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
                 }
             }
         }
-        return true
+        return false
     }
     override fun onQueryTextSubmit(query: String?): Boolean {
-        return true
+        return false
     }
 
 }
