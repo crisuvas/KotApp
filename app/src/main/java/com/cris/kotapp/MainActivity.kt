@@ -17,6 +17,7 @@ import android.widget.*
 class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SearchView.OnQueryTextListener {
 
 
+
     private var editName: EditText? = null
     private var editAge: EditText? = null
     //private var textName: TextView? = null
@@ -26,7 +27,6 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     private var button: Button? =null
     private var radioM: RadioButton? = null
     private var radioF: RadioButton? = null
-    private var message = ""
     private var listV: ListView? = null
     private var nombre: Array<String>? = null
     private var edad: Array<String>? = null
@@ -69,12 +69,12 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         editAge!!.addTextChangedListener(this)
         listV!!.onItemClickListener = this
         listV!!.onItemLongClickListener = this
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        search = menu!!.findItem(R.id.app_bar_search).actionView as SearchView
-        search!!.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+    override fun onCreateOptionsMenu(menu : Menu): Boolean {
+       menuInflater.inflate(R.menu.menusearch, menu)
+        search = menu.findItem(R.id.app_bar_search).actionView as SearchView
         search!!.setOnQueryTextListener(this)
         return true
     }
@@ -315,12 +315,41 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
             listV!!.adapter = adapter
         }
     }
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        return false
+        count = 1
+        if(!newText.equals("", ignoreCase = false)){
+            for(i in 0..num){
+                if(nombre!![i] != null){
+                    if(nombre!![i].startsWith(newText.toString())){
+                        val listName = arrayOfNulls<String>(count)
+                        for(j in 0..count){
+                            listName[j] = nombre!![i]
+                        }
+                        count++
+                        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
+                        listV!!.adapter = adapter
+                    }
+                }
+            }
+        }else{
+            count=1
+            for(i in 0..num){
+                if(nombre!![i] != null){
+                    val listName = arrayOfNulls<String>(count)
+                    for(j in 0..count){
+                        listName[j] = nombre!![j]
+                    }
+                    count++
+                    val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
+                    listV!!.adapter = adapter
+                }
+            }
+        }
+        return true
+    }
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
     }
 
 }
