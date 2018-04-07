@@ -1,4 +1,5 @@
 package com.cris.kotapp
+import Models.Person
 import android.content.Context
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     private var listName: Array<String>? = null
     private var vibrator: Vibrator? = null
     private var search: SearchView? = null
+    private var list: MutableList<Person> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         editAge!!.addTextChangedListener(this)
         listV!!.onItemClickListener = this
         listV!!.onItemLongClickListener = this
+
 
     }
 
@@ -195,6 +198,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         }
     }
     private fun addDatos(){
+        list.add(Person(1, name, age.toInt(), gender ))
         var nombres: Array<String>
         for(i in 0..num){
             if(nombre?.get(i) == ""){
