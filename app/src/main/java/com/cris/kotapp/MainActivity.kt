@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.View
 import android.widget.*
+import java.util.stream.Collectors
 
 
 class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, SearchView.OnQueryTextListener {
@@ -29,18 +30,13 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     private var radioM: RadioButton? = null
     private var radioF: RadioButton? = null
     private var listV: ListView? = null
-    private var nombre: Array<String>? = null
-    private var edad: Array<String>? = null
-    private var sexo: Array<String>? = null
     private var gender = ""
-    private var num = 10
-    private var count = 1
     private var pos = 0
     private var action = "insert"
-    private var listName: Array<String>? = null
     private var vibrator: Vibrator? = null
     private var search: SearchView? = null
     private var list: MutableList<Person> = ArrayList()
+    private var listData: MutableList<Person> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +49,6 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         radioF = findViewById(R.id.radioButton_F)
         listV = findViewById(R.id.list)
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
-        nombre =Array(num, {""})
-        edad =Array(num, {""})
-        sexo =Array(num, {""})
 
         radioM!!.setOnClickListener(this)
         radioF!!.setOnClickListener(this)
@@ -198,25 +191,16 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         }
     }
     private fun addDatos(){
-        list.add(Person(1, name, age.toInt(), gender ))
+        list.add(Person(name, age.toInt(), gender ))
         watchData(list)
         editName!!.setText("")
         editAge!!.setText("")
     }
     private fun updateDatos(){
-            nombre?.set(pos, name)
-            edad?.set(pos, age)
-            sexo?.set(pos, gender)
-            listName = Array(count, { "" })
-            var n = count - 1
-            for (j in 0..n) {
-                listName?.set(j, nombre?.get(j) as String)
-            }
-            val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
-            listV!!.adapter = adapter
-            editName!!.setText("")
-            editAge!!.setText("")
-            action = "insert"
+        list.set(pos, Person(name, age.toInt(), gender))
+        watchData(list)
+        editName!!.setText("")
+        editAge!!.setText("")
     }
 
 
@@ -253,58 +237,25 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         alert.setIcon(R.mipmap.ic_tortuga)
                 .setTitle(R.string.app_alertDialog)
                 .setPositiveButton("Eliminar"){dialog, which ->
-                    nombre?.set(i, "")
-                    edad?.set(i, "")
-                    sexo?.set(i, "")
-                    mostrar()
+                    list.removeAt(i)
+                    watchData(list)
                 }
                 .setNegativeButton("Cancelar"){dialog, which ->
                 }
                 .show()
     }
-    private fun mostrar(){
-        count = 1
-        for(i in 0..num){
-            if(nombre!![i] != ""){
-                val listName = arrayOfNulls<String>(count)
-                for(j in 0..count){
-                    listName[j] = nombre!![i]
-                }
-            }
-            count++
-            val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
-            listV!!.adapter = adapter
-        }
-    }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        count = 1
         if(!newText.equals("", ignoreCase = true)){
-            for(i in 0 until num){
-                if(nombre!![i] != null){
-                    if(nombre!![i].startsWith(newText.toString())){
-                        val listName = arrayOfNulls<String>(count)
-                        for(j in 0 until count){
-                            listName[j] = nombre!![i]
-                        }
-                        count++
-                        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
-                        listV!!.adapter = adapter
-                    }
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                listData = list.stream().filter{p-> p.getName().startsWith(newText.toString())}
+                        .collect(Collectors.toList())
+                watchData(listData)
             }
         }else{
-            count=1
-            for(i in 0 until num){
-                if(nombre!![i] != null){
-                    val listName = arrayOfNulls<String>(count)
-                    for(j in 0 until count){
-                        listName[j] = nombre!![j]
-                    }
-                    count++
-                    val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listName)
-                    listV!!.adapter = adapter
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                listData = list.stream().collect(Collectors.toList())
+                watchData(listData)
             }
         }
         return false
