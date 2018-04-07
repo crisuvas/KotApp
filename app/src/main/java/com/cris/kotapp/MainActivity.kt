@@ -199,22 +199,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
     }
     private fun addDatos(){
         list.add(Person(1, name, age.toInt(), gender ))
-        var nombres: Array<String>
-        for(i in 0..num){
-            if(nombre?.get(i) == ""){
-                nombre?.set(i, name)
-                edad?.set(i, age)
-                sexo?.set(i, gender)
-                nombres = Array(count,{""})
-                for(j in 0..i){
-                    nombres[j] = nombre?.get(j) as String
-                }
-                val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, nombres)
-                listV!!.adapter = adapter
-                count++
-                break
-            }
-        }
+        watchData(list)
         editName!!.setText("")
         editAge!!.setText("")
     }
@@ -236,10 +221,10 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
 
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        editName!!.setText((nombre?.get(position)))
-        editAge!!.setText((edad?.get(position)))
+        editName!!.setText((list.get(position).getName()))
+        editAge!!.setText((list.get(position).getAge().toString()))
 
-        when(sexo?.get(position)){
+        when(list.get(position).getType()){
             "Masculino" ->{
                 radioM!!.isChecked = true
                 gender = "Masculino"
@@ -328,4 +313,8 @@ class MainActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Com
         return false
     }
 
+    private fun watchData(datalist: MutableList<Person>){
+        val adapter = ArrayAdapter<Person>(this, android.R.layout.simple_list_item_1, datalist)
+        listV!!.adapter = adapter
+    }
 }
